@@ -9,14 +9,14 @@ const adminRoute = require("./routes/adminRoute");
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors()
-);
+app.use(cors({ credentials: true }));
 app.use("/user", userRoute);
 app.use("/admin", adminRoute);
 
 mongoose
-  .connect("mongodb+srv://bijeesh:qN1PwM8yoav5NJs6@cluster0.rqmpu.mongodb.net/amazon")
+  .connect(
+    "mongodb+srv://bijeesh:qN1PwM8yoav5NJs6@cluster0.rqmpu.mongodb.net/amazon"
+  )
   .then(console.log("db connected"))
   .catch((err) => console.log(err.message));
 
