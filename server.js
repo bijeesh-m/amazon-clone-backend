@@ -1,0 +1,28 @@
+const express = require("express");
+require("dotenv").config();
+const cors = require("cors");
+const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+const userRoute = require("./routes/userRoute");
+const adminRoute = require("./routes/adminRoute");
+
+const app = express();
+app.use(express.json());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+app.use("/user", userRoute);
+app.use("/admin", adminRoute);
+
+mongoose
+  .connect("mongodb://localhost:27017/amazon")
+  .then(console.log("db connected"))
+  .catch((err) => console.log(err.message));
+
+app.listen(process.env.PORT, () => {
+  console.log("server running");
+});

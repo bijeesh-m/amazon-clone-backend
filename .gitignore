@@ -1,0 +1,56 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore build and dist directories
+build/
+dist/
+
+# Ignore environment files
+.env
+
+# Ignore any log files
+*.log
+
+# Ignore Visual Studio Code settings
+.vscode/
+
+# Ignore editor configuration files
+*.editorconfig
+*.sublime-project
+*.sublime-workspace
+*.komodoproject
+.vscode/
+
+# Ignore operating system files
+.DS_Store
+Thumbs.db
+
+# Ignore npm package-lock files
+package-lock.json
+
+# Ignore yarn lock file
+yarn.lock
+
+# Ignore database files
+*.sqlite
+*.db
+
+# Ignore IDE configuration files
+.idea/
+*.iml
+
+# Ignore compiled binaries or libraries
+*.dll
+*.exe
+
+# Ignore any compiled Java classes
+*.class
+
+# Ignore files generated during the build process
+/target/
+/dist/
+/out/
+/npm-debug.log*
+*.pid
+*.seed
+*.pid.lock
