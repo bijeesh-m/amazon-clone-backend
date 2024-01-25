@@ -19,7 +19,7 @@ app.use("/user", userRoute);
 app.use("/admin", adminRoute);
 
 mongoose
-  .connect("mongodb://localhost:27017/amazon")
+  .connect("mongodb+srv://bijeesh:qN1PwM8yoav5NJs6@cluster0.rqmpu.mongodb.net/amazon")
   .then(console.log("db connected"))
   .catch((err) => console.log(err.message));
 
