@@ -11,7 +11,6 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://amazon-clone-friendend.vercel.app",
     credentials: true,
   })
 );
