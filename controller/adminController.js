@@ -7,6 +7,7 @@ const Order = require("../models/ordersSchema");
 module.exports.adminLogin = async (req, res) => {
   const user = req.body;
   const token = createToken(user.email, user.password);
+  console.log(token);
   res.cookie("adminjwt", token, { secure: true, sameSite: "none" });
   res.status(200).send("sucess");
 };
