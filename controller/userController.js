@@ -69,7 +69,7 @@ module.exports.login = async (req, res) => {
     const auth = await bcrypt.compare(user.password, userExist.password);
     if (auth) {
       const token = createToken(userExist._id, userExist.username);
-      res.cookie("userjwt", token, { secure: true, sameSite: 'none' });
+      res.cookie("userjwt", token, { secure: true, sameSite: "none" });
       res.status(200).json({
         user: userExist,
         data: "success",
@@ -302,8 +302,8 @@ module.exports.processPayment = async (req, res) => {
     payment_method_types: ["card"],
     line_items: lineItems,
     mode: "payment",
-    success_url: `http://localhost:3000/success?paymentStatus=success&user=${userId}&total=${total}`,
-    cancel_url: "http://localhost:3000/cancel",
+    success_url: `https://amazon-clone-votv.onrender.com/success?paymentStatus=success&user=${userId}&total=${total}`,
+    cancel_url: "https://amazon-clone-votv.onrender.com/cancel",
   });
   res.send(session.id);
 };
