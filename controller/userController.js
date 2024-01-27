@@ -155,10 +155,10 @@ module.exports.addToCart = async (req, res) => {
       await uUser.save();
       res.status(200).send("successfully added");
     } else {
-      res.status(409).send("failed");
+      res.status(409).send("already added");
     }
   } else {
-    res.status(409).send("failed");
+    res.status(409).send("Conflict");
   }
 };
 
