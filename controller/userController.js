@@ -229,7 +229,6 @@ module.exports.getUser = async (req, res) => {
   const userId = req.params.id;
   const user = await User.findById(userId);
   const coupen = await Coupon.find();
-  // console.log(user);
   res.status(200).json({ user: user.address, cart: user.cart, coupen: coupen });
 };
 
@@ -279,7 +278,6 @@ module.exports.productsByCategory = async (req, res) => {
 module.exports.processPayment = async (req, res) => {
   const userId = req.params.id;
   const { totalPrice } = req.body;
-  console.log(req.body);
   const total = Math.round(totalPrice + 40);
   const user = await User.findById(userId);
   const products = user.cart;
@@ -295,8 +293,6 @@ module.exports.processPayment = async (req, res) => {
     },
     quantity: items.qty,
   }));
-
-  console.log(total);
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
@@ -319,7 +315,6 @@ module.exports.updateOrder = async (req, res) => {
     totalPrice: totalPrice,
     status: "Pending",
   });
-  // console.log(products);
   if (newOrder) {
     const updatedCart = user.cart.filter((item) => {
       return !products.some((product) => product._id === item._id);
@@ -328,9 +323,6 @@ module.exports.updateOrder = async (req, res) => {
       $set: { cart: updatedCart },
       $push: { orders: newOrder.id },
     });
-    // const newUser = await User.findById(userId).populate("orders");
-    // console.log(newUser);
-    res.status(200).send("Oreder Successful");
   }
 };
 

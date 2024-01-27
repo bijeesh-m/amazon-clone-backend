@@ -119,7 +119,6 @@ module.exports.productBySubCategory = async (req, res) => {
   }
 };
 module.exports.productByCategory = async (req, res) => {
-  console.log(req.params);
   const category = req.params.category;
   const products = await Products.find({ subcategory: category });
   if (products) {
@@ -194,13 +193,11 @@ module.exports.salesReport = async (req, res) => {
       "Dec",
     ];
 
-    console.log(monthlySales);
 
     const total = monthlySales.reduce((acc, value) => {
       return (acc = acc + value.totalPrice);
     }, 0);
 
-    console.log(total);
 
     const mo = [];
     const sales = [];
