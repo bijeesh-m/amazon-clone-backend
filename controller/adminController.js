@@ -7,14 +7,13 @@ const Order = require("../models/ordersSchema");
 module.exports.adminLogin = async (req, res) => {
   const user = req.body;
   const token = createToken(user.email, user.password);
-  res.cookie("adminjwt", token, );
+  res.cookie("adminjwt", token, { secure: true, sameSite: "none" });
   res.status(200).send("sucess");
 };
 
 module.exports.logout = async (req, res) => {
   res.cookie("adminjwt", " ", { httpOnly: true, expiresIn: 1 });
   res.status(200).send("success");
-  
 };
 
 module.exports.users = async (req, res) => {
