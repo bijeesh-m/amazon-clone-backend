@@ -12,7 +12,7 @@ module.exports.adminLogin = async (req, res) => {
   res.status(200).send("sucess");
 };
 
-module.exports.getadmin = async (req, res) => {
+module.exports.getAdmin = async (req, res) => {
   const cookie = req.cookies;
   console.log(cookie);
 };
