@@ -12,6 +12,11 @@ module.exports.adminLogin = async (req, res) => {
   res.status(200).send("sucess");
 };
 
+module.exports.getadmin = async (req, res) => {
+  const cookie = req.cookies;
+  console.log(cookie);
+};
+
 module.exports.logout = async (req, res) => {
   res.cookie("adminjwt", " ", { httpOnly: true, expiresIn: 1 });
   res.status(200).send("success");
@@ -194,11 +199,9 @@ module.exports.salesReport = async (req, res) => {
       "Dec",
     ];
 
-
     const total = monthlySales.reduce((acc, value) => {
       return (acc = acc + value.totalPrice);
     }, 0);
-
 
     const mo = [];
     const sales = [];
