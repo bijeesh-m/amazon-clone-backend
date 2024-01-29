@@ -16,7 +16,7 @@ module.exports.adminLogin = async (req, res) => {
 module.exports.getAdmin = async (req, res) => {
   const cookie = req.cookies.adminjwt;
   const admin = jwtDecode(cookie)
-  // res.status(200).send(admin.)
+  res.status(200).send(admin)
   console.log(admin);
 };
 
