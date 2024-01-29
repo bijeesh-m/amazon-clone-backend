@@ -323,6 +323,7 @@ module.exports.updateOrder = async (req, res) => {
       $set: { cart: updatedCart },
       $push: { orders: newOrder.id },
     });
+    res.status(200).send("Order success");
   }
 };
 
