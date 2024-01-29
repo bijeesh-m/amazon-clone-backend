@@ -298,8 +298,8 @@ module.exports.processPayment = async (req, res) => {
     payment_method_types: ["card"],
     line_items: lineItems,
     mode: "payment",
-    success_url: `https://amazon-clone-votv.onrender.com/success?paymentStatus=success&user=${userId}&total=${total}`,
-    cancel_url: "https://amazon-clone-votv.onrender.com/cancel",
+    success_url: `https://amazon-clone-friendend.vercel.app/success?paymentStatus=success&user=${userId}&total=${total}`,
+    cancel_url: "https://amazon-clone-friendend.vercel.app/cancel",
   });
   res.send(session.id);
 };
