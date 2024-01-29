@@ -3,6 +3,7 @@ const Users = require("../models/users");
 const cloudinary = require("../utils/cloudinary");
 const { createToken } = require("../helpers/createToken");
 const Order = require("../models/ordersSchema");
+const { jwtDecode } = require("jwt-decode");
 
 module.exports.adminLogin = async (req, res) => {
   const user = req.body;
@@ -13,8 +14,10 @@ module.exports.adminLogin = async (req, res) => {
 };
 
 module.exports.getAdmin = async (req, res) => {
-  const cookie = req.cookies;
-  console.log(cookie);
+  const cookie = req.cookies.adminjwt;
+  const admin = jwtDecode(cookie)
+  // res.status(200).send(admin.)
+  console.log(admin);
 };
 
 module.exports.logout = async (req, res) => {
