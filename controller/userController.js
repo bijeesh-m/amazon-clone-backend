@@ -48,7 +48,7 @@ module.exports.verifyOtp = async (req, res) => {
       if (verification_check.status === "approved") {
         const userInfo = await User.create(user);
         const token = createToken(userInfo._id, userInfo.username);
-        res.cookie("userjwt", token, { httpOnly: true });
+        res.cookie("userjwt", token, { secure: true, sameSite: "None" });
         res.status(200).json({ data: "success", token: token });
       } else {
         res.status(500).send("failed");
