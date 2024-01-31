@@ -68,7 +68,7 @@ module.exports.login = async (req, res) => {
     const auth = await bcrypt.compare(user.password, userExist.password);
     if (auth) {
       const token = createToken(userExist._id, userExist.username);
-      res.cookie("userjwt", token, { secure: true, sameSite: "none" });
+      res.cookie("userjwt", token, {httpOnly:false});
       res.status(200).json({
         user: userExist,
         data: "success",
