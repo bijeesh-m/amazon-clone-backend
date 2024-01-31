@@ -9,7 +9,7 @@ const adminRoute = require("./routes/adminRoute");
 const app = express();
 app.use(
   cors({
-    origin: "*",
+    origin: "https://amazon-clone-friendend.vercel.app",
     credentials: true,
   })
 );
