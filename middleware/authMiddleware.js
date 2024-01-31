@@ -7,13 +7,13 @@ const authenticate = (req, res, next) => {
   if (token !== " ") {
     jwt.verify(token, secretKey, (err) => {
       if (err) {
-        res.status(401).send(token);
+        res.status(401).send("Unauthorized");
       } else {
         next();
       }
     });
   } else {
-    res.status(401).send(token);
+    res.status(401).send("Unauthorized");
   }
 };
 

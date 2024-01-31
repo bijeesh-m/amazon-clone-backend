@@ -3,7 +3,6 @@ const Product = require("../models/productModel");
 const Order = require("../models/ordersSchema");
 const Coupon = require("../models/coopenSchema");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const { createToken } = require("../helpers/createToken");
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
