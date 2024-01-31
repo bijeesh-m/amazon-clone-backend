@@ -139,12 +139,17 @@ module.exports.getOrders = async (req, res) => {
   const orders = await Order.find().populate("user");
   res.send(orders);
 };
+
+/////////////////////ORDER BY ID/////////////////////////
+
 module.exports.getOrderById = async (req, res) => {
   const orderId = req.params.id;
 
   const orders = await Order.findById(orderId).populate("user");
   res.send(orders);
 };
+
+/////////////////////Update Order Status/////////////////////////
 
 module.exports.updateOrder = async (req, res) => {
   const status = req.body.orderStatus;
@@ -155,17 +160,18 @@ module.exports.updateOrder = async (req, res) => {
   res.status(200).send("Changes saved");
 };
 
+/////////////////////SALES REPORT/////////////////////////
+
 module.exports.salesReport = async (req, res) => {
   try {
     const monthlySales = await Order.aggregate([
       {
         $match: {
-          status: "Delivered", // Filter orders with "Delivered" status
+          status: "Delivered",
         },
       },
       {
         $addFields: {
-          // Convert the string to a date
           createdAtDate: { $toDate: "$createdAt" },
         },
       },
@@ -173,7 +179,7 @@ module.exports.salesReport = async (req, res) => {
         $group: {
           _id: {
             $dateToString: {
-              format: "%Y-%m", // Group by year and month
+              format: "%Y-%m",
               date: "$createdAtDate",
             },
           },
@@ -183,10 +189,12 @@ module.exports.salesReport = async (req, res) => {
       },
       {
         $sort: {
-          _id: 1, // Sort by year and month
+          _id: 1,
         },
       },
     ]);
+
+    console.log(monthlySales);
     const monthNames = [
       "Jan",
       "Feb",
@@ -202,27 +210,23 @@ module.exports.salesReport = async (req, res) => {
       "Dec",
     ];
 
-    const total = monthlySales.reduce((acc, value) => {
-      return (acc = acc + value.totalPrice);
+    const totalSales = monthlySales.reduce((acc, monthlyData) => {
+      return acc + monthlyData.totalSales;
     }, 0);
-
-    console.log(total);
 
     const mo = [];
     const sales = [];
 
-    // Convert and log the monthly sales information with month names
     monthlySales.forEach((monthlySale) => {
       const [year, month] = monthlySale._id.split("-");
-      const monthName = monthNames[parseInt(month, 10) - 1]; // Subtract 1 to match array index
+      const monthName = monthNames[parseInt(month, 10) - 1];
       const totalSales = monthlySale.totalSales;
       mo.push(monthName);
       sales.push(totalSales);
     });
 
-    res.send({ month: mo, sales: sales });
+    res.send({ month: mo, sales: sales, total: totalSales.toLocaleString() });
   } catch (error) {
     console.error("Error getting monthly sales:", error);
-    throw error;
   }
 };
