@@ -15,8 +15,8 @@ module.exports.adminLogin = async (req, res) => {
 
 module.exports.getAdmin = async (req, res) => {
   const cookie = req.cookies.adminjwt;
-  const admin = jwtDecode(cookie)
-  res.status(200).send(admin)
+  const admin = jwtDecode(cookie);
+  res.status(200).send(admin);
   console.log(admin);
 };
 
@@ -205,6 +205,8 @@ module.exports.salesReport = async (req, res) => {
     const total = monthlySales.reduce((acc, value) => {
       return (acc = acc + value.totalPrice);
     }, 0);
+
+    console.log(total);
 
     const mo = [];
     const sales = [];
