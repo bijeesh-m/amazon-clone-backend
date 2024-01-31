@@ -14,7 +14,10 @@ const app = express();
 //   })
 // );
 app.use(
-  cors()
+  cors({
+    origin: "https://amazon-clone-friendend.vercel.app",
+    credentials: true,
+  })
 );
 app.use(express.json());
 app.use(cookieParser());
