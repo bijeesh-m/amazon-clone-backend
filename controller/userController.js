@@ -310,11 +310,14 @@ module.exports.updateOrder = async (req, res) => {
   const userId = req.params.id;
   const user = await User.findById(userId);
   const products = user.cart;
+
+  const orderid = Date.now();
   const newOrder = await Order.create({
     user: userId,
     products: products,
     totalPrice: totalPrice,
     status: "Pending",
+    orderId: orderid,
   });
   if (newOrder) {
     const updatedCart = user.cart.filter((item) => {
