@@ -146,7 +146,7 @@ module.exports.getOrders = async (req, res) => {
 module.exports.getOrderById = async (req, res) => {
   const orderId = req.params.id;
 
-  const orders = await Order.findById(orderId).populate("user");
+  const orders = await Order.findOne({ orderId: orderId }).populate("user");
   res.send(orders);
 };
 
@@ -155,9 +155,12 @@ module.exports.getOrderById = async (req, res) => {
 module.exports.updateOrder = async (req, res) => {
   const status = req.body.orderStatus;
   const orderId = req.params.id;
-  const order = await Order.findByIdAndUpdate(orderId, {
-    $set: { status: status },
-  });
+  const order = await Order.findOneAndUpdate(
+    { orderId: orderId },
+    {
+      $set: { status: status },
+    }
+  );
   res.status(200).send("Changes saved");
 };
 
