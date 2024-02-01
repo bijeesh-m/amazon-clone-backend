@@ -342,6 +342,6 @@ module.exports.Orders = async (req, res) => {
 
 module.exports.viewOrder = async (req, res) => {
   const orderId = req.params.id;
-  const order = await Order.findById(orderId).populate("user");
+  const order = await Order.findOne({ orderId: orderId }).populate("user");
   res.send(order);
 };
