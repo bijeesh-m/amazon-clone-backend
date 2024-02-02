@@ -108,7 +108,6 @@ module.exports.googleauth = async (req, res) => {
 
 module.exports.products = async (req, res) => {
   const products = await Product.find();
-  console.log(products);
   if (products) {
     res.status(200).send(products);
   }
