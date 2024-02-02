@@ -108,6 +108,7 @@ module.exports.googleauth = async (req, res) => {
 
 module.exports.products = async (req, res) => {
   const products = await Product.find();
+  console.log(products);
   if (products) {
     res.status(200).send(products);
   }
@@ -333,24 +334,21 @@ module.exports.updateOrder = async (req, res) => {
 };
 
 module.exports.Orders = async (req, res) => {
-  // console.log("dfsjskjs");
   const cookie = req.cookies.userjwt;
-  // if (cookie) {
-  const page = parseInt(req.query.page) || 1;
-  const perPage = parseInt(req.query.perPage) || 10;
-  // const user = jwtDecode(cookie);
-  // const Uuser = await User.findById(user.userId).populate("orders");
-  const Uuser = await User.findById("65aa154a597c507ab0a0f56b").populate(
-    "orders"
-  );
-  const orders = Uuser.orders;
-  console.log("orders", orders);
-  const startIndex = (page - 1) * perPage;
-  const endIndex = startIndex + 10;
-  const uOrders = orders.slice(startIndex, endIndex);
-  console.log(uOrders);
-  res.status(200).send(uOrders);
-  // }
+  if (cookie) {
+    const page = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.perPage) || 10;
+    const user = jwtDecode(cookie);
+    const Uuser = await User.findById(user.userId).populate("orders");
+    // const Uuser = await User.findById("65aa154a597c507ab0a0f56b").populate(
+    //   "orders"
+    // );
+    const orders = Uuser.orders;
+    const startIndex = (page - 1) * perPage;
+    const endIndex = startIndex + 10;
+    const uOrders = orders.slice(startIndex, endIndex);
+    res.status(200).send(uOrders);
+  }
 };
 
 module.exports.viewOrder = async (req, res) => {
