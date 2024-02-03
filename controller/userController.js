@@ -339,13 +339,16 @@ module.exports.Orders = async (req, res) => {
     const perPage = parseInt(req.query.perPage) || 10;
     const user = jwtDecode(cookie);
     const Uuser = await User.findById(user.userId).populate("orders");
-    // const Uuser = await User.findById("65aa154a597c507ab0a0f56b").populate(
-    //   "orders"
-    // );
     const orders = Uuser.orders;
+    const sortedOrder = orders.sort((a, b) => {
+      const timeA = new Date(a.createdAt).getTime();
+      const timeB = new Date(b.createdAt).getTime();
+
+      return timeB - timeA;
+    });
     const startIndex = (page - 1) * perPage;
     const endIndex = startIndex + 10;
-    const uOrders = orders.slice(startIndex, endIndex);
+    const uOrders = sortedOrder.slice(startIndex, endIndex);
     res.status(200).send(uOrders);
   }
 };

@@ -1,54 +1,55 @@
 const Products = require("../models/productModel");
 const Users = require("../models/users");
 const cloudinary = require("../utils/cloudinary");
+const asyncErrorHandler = require("../utils/asyncErrorHandler");
 const { createToken } = require("../helpers/createToken");
 const Order = require("../models/ordersSchema");
 const { jwtDecode } = require("jwt-decode");
 
-module.exports.adminLogin = async (req, res) => {
+module.exports.adminLogin = asyncErrorHandler(async (req, res) => {
   const user = req.body;
   const token = createToken(user.email, user.password);
   console.log(token);
   res.cookie("adminjwt", token, { secure: true, sameSite: "none" });
   res.status(200).send("sucess");
-};
+});
 
-module.exports.getAdmin = async (req, res) => {
+module.exports.getAdmin = asyncErrorHandler(async (req, res) => {
   const cookie = req.cookies.adminjwt;
   if (cookie) {
     const admin = jwtDecode(cookie);
     res.status(200).send(admin);
   }
-};
+});
 
-module.exports.logout = async (req, res) => {
+module.exports.logout = asyncErrorHandler(async (req, res) => {
   res.cookie("adminjwt", " ", { httpOnly: true, expiresIn: 1 });
   res.status(200).send("success");
-};
+});
 
-module.exports.users = async (req, res) => {
+module.exports.users = asyncErrorHandler(async (req, res) => {
   const users = await Users.find();
   if (users) {
     res.status(200).send(users);
   }
-};
+});
 
-module.exports.user = async (req, res) => {
+module.exports.user = asyncErrorHandler(async (req, res) => {
   const userId = req.params.id;
   const user = await Users.findById(userId);
   if (user) {
     res.status(200).send(user);
   }
-};
+});
 
-module.exports.products = async (req, res) => {
+module.exports.products = asyncErrorHandler(async (req, res) => {
   const products = await Products.find();
   res.send(products);
-};
+});
 
 ///////////////////////productById///////////////////////////
 
-module.exports.productById = async (req, res) => {
+module.exports.productById = asyncErrorHandler(async (req, res) => {
   const prodId = req.params.id;
   const product = await Products.findById(prodId);
   if (product) {
@@ -56,10 +57,10 @@ module.exports.productById = async (req, res) => {
   } else {
     res.status(404).send("Product not found");
   }
-};
+});
 ///////////////////////////ADD PRODUCT///////////////////////
 
-module.exports.addProduct = async (req, res, next) => {
+module.exports.addProduct = asyncErrorHandler(async (req, res, next) => {
   const {
     productTitle,
     productCategory,
@@ -87,9 +88,9 @@ module.exports.addProduct = async (req, res, next) => {
       data: product,
     });
   }
-};
+});
 
-module.exports.updateProduct = async (req, res) => {
+module.exports.updateProduct = asyncErrorHandler(async (req, res) => {
   const prodId = req.params.id;
   try {
     const { title, category, subcategory, description, price, image } =
@@ -109,9 +110,9 @@ module.exports.updateProduct = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-};
+});
 
-module.exports.deleteProduct = async (req, res) => {
+module.exports.deleteProduct = asyncErrorHandler(async (req, res) => {
   const prodId = req.params.id;
   const product = await Products.findByIdAndDelete(prodId);
   if (!product) {
@@ -119,40 +120,51 @@ module.exports.deleteProduct = async (req, res) => {
   } else {
     res.status(200).send("Product Deleted");
   }
-};
+});
 
-module.exports.productBySubCategory = async (req, res) => {
+module.exports.productBySubCategory = asyncErrorHandler(async (req, res) => {
   const subcategory = req.params.subcategory;
   const products = await Products.find({ subcategory: subcategory });
   if (products) {
     res.status(200).send(products);
   }
-};
-module.exports.productByCategory = async (req, res) => {
+});
+module.exports.productByCategory = asyncErrorHandler(async (req, res) => {
   const category = req.params.category;
   const products = await Products.find({ subcategory: category });
   if (products) {
     res.status(200).send(products);
   }
-};
+});
 
-module.exports.getOrders = async (req, res) => {
+module.exports.getOrders = asyncErrorHandler(async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const perPage = parseInt(req.query.perPage) || 10;
   const orders = await Order.find().populate("user");
-  res.send(orders);
-};
+  const sortedOrder = orders.sort((a, b) => {
+    const timeA = new Date(a.createdAt).getTime();
+    const timeB = new Date(b.createdAt).getTime();
+
+    return timeB - timeA;
+  });
+  const startIndex = (page - 1) * perPage;
+  const endIndex = startIndex + 10;
+  const uOrders = sortedOrder.slice(startIndex, endIndex);
+  res.status(200).send(uOrders);
+});
 
 /////////////////////ORDER BY ID/////////////////////////
 
-module.exports.getOrderById = async (req, res) => {
+module.exports.getOrderById = asyncErrorHandler(async (req, res) => {
   const orderId = req.params.id;
 
   const orders = await Order.findOne({ orderId: orderId }).populate("user");
   res.send(orders);
-};
+});
 
 /////////////////////Update Order Status/////////////////////////
 
-module.exports.updateOrder = async (req, res) => {
+module.exports.updateOrderStatus = asyncErrorHandler(async (req, res) => {
   const status = req.body.orderStatus;
   const orderId = req.params.id;
   const order = await Order.findOneAndUpdate(
@@ -162,11 +174,11 @@ module.exports.updateOrder = async (req, res) => {
     }
   );
   res.status(200).send("Changes saved");
-};
+});
 
 /////////////////////SALES REPORT/////////////////////////
 
-module.exports.salesReport = async (req, res) => {
+module.exports.salesReport = asyncErrorHandler(async (req, res) => {
   try {
     const monthlySales = await Order.aggregate([
       {
@@ -233,4 +245,4 @@ module.exports.salesReport = async (req, res) => {
   } catch (error) {
     console.error("Error getting monthly sales:", error);
   }
-};
+});

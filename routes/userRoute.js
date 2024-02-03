@@ -25,7 +25,7 @@ router.post("/address", userController.address);
 router.get("/getaddress/:id", userController.getaddress);
 router.post("/payment/:id", userController.processPayment);
 router.post("/update-oreders/:id", userController.updateOrder);
-router.get("/orders", userController.Orders);
+router.get("/orders", authenticate, userController.Orders);
 router.get("/vieworder/:id", userController.viewOrder);
 
 module.exports = router;

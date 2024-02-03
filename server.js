@@ -7,18 +7,18 @@ const userRoute = require("./routes/userRoute");
 const adminRoute = require("./routes/adminRoute");
 
 const app = express();
-app.use(
-  cors({
-    origin: "https://amazon-clone-friendend.vercel.app",
-    credentials: true,
-  })
-);
 // app.use(
 //   cors({
-//     origin: "http://localhost:3000",
+//     origin: "https://amazon-clone-friendend.vercel.app",
 //     credentials: true,
 //   })
 // );
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser());
