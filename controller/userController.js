@@ -270,11 +270,7 @@ module.exports.address = async (req, res) => {
 module.exports.productsByCategory = async (req, res) => {
   const category = req.params.category;
   const products = await Product.find({ category: category });
-  if (products) {
-    res.status(200).send(products);
-  } else {
-    res.status(404).send("product not found");
-  }
+  res.status(200).send(products);
 };
 
 module.exports.processPayment = async (req, res) => {
