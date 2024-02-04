@@ -157,7 +157,6 @@ module.exports.getOrders = asyncErrorHandler(async (req, res) => {
 
 module.exports.getOrderById = asyncErrorHandler(async (req, res) => {
   const orderId = req.params.id;
-
   const orders = await Order.findOne({ orderId: orderId }).populate("user");
   res.send(orders);
 });
