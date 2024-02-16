@@ -62,7 +62,6 @@ module.exports.verifyOtp = async (req, res) => {
 //////////////////////////USER LOGIN//////////////////////////
 
 module.exports.login = async (req, res) => {
-  console.log("kjllkjlj");
   const user = req.body;
   const userExist = await User.findOne({ email: user.email });
   if (userExist) {
